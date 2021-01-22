@@ -35,8 +35,8 @@ jobs:
                 fi
 
                 echo dockerfile: $IMAGE '->' repo: $REPO
-                docker build -t codesignal/$REPO:dev $IMAGE
-                docker push codesignal/$REPO:dev
+                docker build -t codesignal/$REPO:new $IMAGE
+                docker push codesignal/$REPO:new
               fi
               echo --------------------------------------------------------------------
             done
