@@ -1,25 +1,32 @@
 ###
 # A base Docker Container, build on ubuntu and includes node.js, mysql, mongodb, and git.
 ###
-FROM ubuntu:16.04
+FROM ubuntu:20.04
+
+# Making tzdata installation noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+RUN echo 'tzdata tzdata/Areas select Etc' | debconf-set-selections \
+    echo 'tzdata tzdata/Zones/Etc select UTC' | debconf-set-selections
 
 # Set proper locale
 RUN apt-get clean \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends \
-      bc \
-      locales \
-      software-properties-common \
-      build-essential \
-      curl \
-      wget \
-      apt-transport-https \
-      apt-utils \
-      xz-utils \
-      gnupg \
-      python-dev \
-  && rm -rf /var/lib/apt/lists/* \
-  && locale-gen en_US.UTF-8
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bc \
+        locales \
+        build-essential \
+        curl \
+        wget \
+        apt-transport-https \
+        apt-utils \
+        xz-utils \
+        gnupg \
+        ca-certificates \
+        python-dev \
+        lsb-release \
+    && rm -rf /var/lib/apt/lists/* \
+    && locale-gen en_US.UTF-8
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
@@ -40,11 +47,11 @@ RUN echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted univer
     && echo "mysql-server mysql-server/lowercase-table-names select Enabled" | debconf-set-selections \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-       libmysqlclient-dev  \
-       libpq-dev \
-       libpq5 \
-       libssl-dev \
-       mysql-server-5.7 \
+        libmysqlclient-dev  \
+        libpq-dev \
+        libpq5 \
+        libssl-dev \
+        mysql-server-5.7 \
     && mkdir -p /var/lib/mysql \
     && mkdir -p /var/run/mysqld \
     && mkdir -p /var/log/mysql \
@@ -62,13 +69,10 @@ RUN echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted univer
     && rm -rf /var/lib/apt/lists/*
 
 # Install mongodb server
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 20691EEC35216C63CAF66CE1656408E390CFB1F5 \
-    && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list \
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - \
+    && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list \
     && apt-get update \
-    # mongodb-org-server tries to call systemctl, which we don't have, so symlink it to just return "true"
-    && ln -s /bin/true /usr/local/bin/systemctl \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org=4.4.1 \
-    && rm -f /usr/local/bin/systemctl \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org=4.4.3 \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/lib/mongodb
 
@@ -92,25 +96,27 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install git
-RUN add-apt-repository ppa:git-core/ppa -y \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common \
+    && add-apt-repository ppa:git-core/ppa -y \
     && apt-get update \
     && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing PostgreSQL with extensions
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/pgdg.list \
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-       postgresql-13 \
-       postgresql-client-13 \
-       postgresql-contrib-13 \
-       postgis \
-       postgresql-13-postgis-2.5 \
+        postgresql-13 \
+        postgresql-client-13 \
+        postgresql-contrib-13 \
+        postgis \
+        postgresql-13-postgis-2.5 \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing PowerShell
-RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb \
+RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
     && apt-get install -y powershell --no-install-recommends \

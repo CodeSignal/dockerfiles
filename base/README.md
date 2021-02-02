@@ -1,6 +1,6 @@
 # Base Dockerfile
 
-This creates an initial base container built on Ubuntu 16.04. This container includes:
+This creates an initial base container built on Ubuntu 20.04. This container includes:
  * Node
  * NVM
  * MySQL Server
