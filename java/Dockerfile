@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 RUN add-apt-repository -y ppa:linuxuprising/java \
     && apt-get update \
