@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 ENV PYTHON_VERSION 3.8.3
 
@@ -77,4 +77,6 @@ RUN python3 -m pip install \
   Django \
   && python3 -m spacy download en_core_web_sm
 
-RUN cp /opt/python/${PYTHON_VERSION}/bin/python3 /usr/bin/python
+# Removing python symlink for python2 and adding for python3 
+RUN rm /usr/bin/python \
+  && ln -s /opt/python/${PYTHON_VERSION}/bin/python3  /usr/bin/python

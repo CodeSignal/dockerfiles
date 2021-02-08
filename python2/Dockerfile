@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 ENV PYTHON_VERSION 2.7.18
 
@@ -25,13 +25,15 @@ RUN mkdir temp \
   && make > /dev/null 2>&1 \
   && make install > /dev/null 2>&1 \
   && cd .. \
-  && curl -O https://bootstrap.pypa.io/get-pip.py \
+  && curl -O https://bootstrap.pypa.io/2.7/get-pip.py \
   && /opt/python/${PYTHON_VERSION}/bin/python get-pip.py \
   && cd .. \
   && rm -rf temp
 
 ENV PATH /opt/python/${PYTHON_VERSION}/bin:$PATH
 
+# this file is needed for MySql-Python installations
+COPY my_config.h /usr/include/mysql
 RUN python -m pip install \
   pathlib \
   numpy==1.16.1 \
