@@ -17,7 +17,7 @@ jobs:
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
             echo List of updated files
-            FILES=$(git diff-tree --name-only -r --diff-filter=ACMRT origin/master HEAD)
+            FILES=$(git diff-tree --name-only -r --diff-filter=ACMRT origin/276-ubuntu-version-20 HEAD)
             for F in $FILES; do echo $F; done
             
             REGEX="(.*)\/Dockerfile"
