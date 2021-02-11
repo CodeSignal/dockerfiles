@@ -1,4 +1,4 @@
-FROM codesignal/java:v8.0.4
+FROM codesignal/java:new
 
 # Pulling things from the maven central repository into maven's cache at ~/.m2
 
