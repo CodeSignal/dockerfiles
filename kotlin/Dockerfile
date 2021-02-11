@@ -1,6 +1,6 @@
-FROM codesignal/java:v8.0.4
+FROM codesignal/java:new
 
-RUN KOTLIN_VERSION=1.4.10 \
+RUN KOTLIN_VERSION=1.4.21 \
     KOTLIN_COMPILER_URL=https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip ; \
   apt-get update \
   && apt-get install -y --no-install-recommends zip unzip \
