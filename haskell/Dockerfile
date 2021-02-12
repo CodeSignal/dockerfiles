@@ -1,12 +1,12 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 # install GHC and Cabal
 RUN add-apt-repository -y ppa:hvr/ghc \
   && apt-get update \
-  && apt-get install -y --no-install-recommends ghc-8.8.1 cabal-install-3.0 libtinfo-dev \
+  && apt-get install -y --no-install-recommends ghc-8.10.2 cabal-install-3.2 libtinfo-dev \
   && rm -rf /var/lib/apt/lists/*
 
-ENV PATH /root/.cabal/bin:/root/.local/bin:/opt/cabal/3.0/bin:/opt/ghc/8.8.1/bin:$PATH
+ENV PATH /root/.cabal/bin:/root/.local/bin:/opt/cabal/3.2/bin:/opt/ghc/8.10.2/bin:$PATH
 
 # install additional global packages
 RUN cabal update \
