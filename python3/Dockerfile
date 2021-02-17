@@ -79,4 +79,4 @@ RUN python3 -m pip install \
 
 # Removing python symlink for python2 and adding for python3 
 RUN rm /usr/bin/python \
-  && ln -s /opt/python/${PYTHON_VERSION}/bin/python3  /usr/bin/python
+  && ln -s /opt/python/${PYTHON_VERSION}/bin/python3 /usr/bin/python

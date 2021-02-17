@@ -4,11 +4,11 @@ RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
-# Installing G++ 8.x version from the ppa
-    g++-8 \
-    gcc-8 \
-# Install GNU Fortran 8
-    gfortran-8 \
+# Installing G++ 10.x version from the ppa
+    g++-10 \
+    gcc-10 \
+# Install GNU Fortran 10
+    gfortran-10 \
 # Additional C++ dependencies
     libssl-dev \
     libjsoncpp-dev \
@@ -28,3 +28,11 @@ RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
   && cd .. \
   && rm -rf Catch2/ \
   && rm -rf /var/lib/apt/lists/*
+
+# Removing g++, gcc, gfortran symlink for default GCC and adding them for GCC-10
+RUN rm -f /usr/bin/g++ \
+    /usr/bin/gcc \
+    /usr/bin/gfortran \
+  && ln -s /usr/bin/g++-10 /usr/bin/g++ \
+  && ln -s /usr/bin/gcc-10 /usr/bin/gcc \
+  && ln -s /usr/bin/gfortran-10 /usr/bin/gfortran
