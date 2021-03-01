@@ -72,6 +72,7 @@ Check out [build dependencies](#build-tree) to figure out if the image you're up
   * lisp
   * lua
   * nim
+  * objective-c
   * ocaml
   * octave
   * pascal
