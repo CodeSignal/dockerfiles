@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 RUN apt-get update \
     && wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb \
