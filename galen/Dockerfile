@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 # Set proper locale
 RUN apt-get clean \
@@ -36,6 +36,12 @@ RUN apt-get update \
     && chmod a+x /usr/bin/xvfb-daemon-run \
     && rm -rf /var/lib/apt/lists/*
 
+# Configuration for noninteractive tzdata installation
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+RUN echo 'tzdata tzdata/Areas select Etc' | debconf-set-selections \
+    echo 'tzdata tzdata/Zones/Etc select UTC' | debconf-set-selections
+
 RUN apt-get update \
     && apt-get install -y \
     bc \
@@ -45,7 +51,7 @@ RUN apt-get update \
     libcurl4-openssl-dev \
     clang \
     libsigsegv2 \
-    libffcall1 \
+    libffcall1-dev \
     libreadline5 \
     make \
     libreadline-dev \
@@ -53,24 +59,25 @@ RUN apt-get update \
     libasound2 \
     libasound2-dev \
     jq \
-    dbus-x11 \
-#Install Node.js
-    && curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
-    && apt-get install -y nodejs maven \
-    && rm -rf /var/lib/apt/lists/*
+    dbus-x11
 
-ENV NODE_PATH=/usr/lib/node_modules/
+# Install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+ENV NVM_DIR /root/.nvm
+
+# Install Node with nvm
+ENV NODE_VERSION 14.14.0
+RUN . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 
 #grab oracle java (auto accept licence)
-RUN add-apt-repository -y ppa:linuxuprising/java \
-    && apt-get update \
-    && echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | /usr/bin/debconf-set-selections \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        oracle-java11-installer \
-        oracle-java11-set-default \
+        openjdk-11-jdk \
         libjackson2-core-java \
         libjackson2-databind-java \
-        libmysql-java \
+        libmariadb-java \
         maven \
     && rm -rf /var/lib/apt/lists/*
 
