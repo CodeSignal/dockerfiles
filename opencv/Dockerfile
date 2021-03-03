@@ -1,6 +1,6 @@
-FROM codesignal/cpp:v8.0.2
+FROM codesignal/cpp:new
 
-ENV OPENCV_VERSION=4.2.0
+ENV OPENCV_VERSION=4.5.1
 
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
   && apt-get update \
@@ -15,7 +15,6 @@ RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
     libswscale-dev \
     unzip \
 # OpenCV optional dependencies
-    python-dev \
     python-numpy \
     libtbb2 \
     libtbb-dev \
