@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 RUN JULIA_PATH=/usr/local/julia \
     JULIA_VERSION=1.0.1 ;\
@@ -9,7 +9,7 @@ RUN JULIA_PATH=/usr/local/julia \
   && export GNUPGHOME="$(mktemp -d)" \
   && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 3673DF529D9049477F76B37566E3C7DC03D6E495 \
   && gpg --batch --verify julia.tar.gz.asc julia.tar.gz \
-  && rm -r "$GNUPGHOME" julia.tar.gz.asc \
+  && rm -rf "$GNUPGHOME" julia.tar.gz.asc \
   && tar -xzf julia.tar.gz -C $JULIA_PATH --strip-components 1 \
 # Cleanup
   && rm -rf /var/lib/apt/lists/* julia.tar.gz*
