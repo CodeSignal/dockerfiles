@@ -1,7 +1,7 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
-RUN apt-get update \
-    && add-apt-repository -y ppa:jonathonf/nimlang \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends nim \
-    && rm -rf /var/lib/apt/lists/*
+# Install Nim
+RUN curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
+
+# Set path to Nim compiler
+ENV PATH /root/.nimble/bin:$PATH
