@@ -1,7 +1,9 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
+  libncurses5 \
+  libtinfo5 \
   libsigsegv2 \
   libffcall1 \
   libreadline5 \
