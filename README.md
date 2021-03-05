@@ -49,6 +49,7 @@ Check out [build dependencies](#build-tree) to figure out if the image you're up
 
 * ubuntu-base
   * acceptance-tests
+  * android-builder
   * cpp
     * opencv
   * cs
