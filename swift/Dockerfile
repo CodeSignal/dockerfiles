@@ -1,25 +1,28 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
-ENV SWIFT_BRANCH=swift-5.3-release \
-    SWIFT_VERSION=swift-5.3-RELEASE \
-    SWIFT_PLATFORM=ubuntu16.04 \
-    SWIFT_PLATFORM_FOLDER=ubuntu1604
+ENV SWIFT_BRANCH=swift-5.3.3-release \
+    SWIFT_VERSION=swift-5.3.3-RELEASE \
+    SWIFT_PLATFORM=ubuntu20.04 \
+    SWIFT_PLATFORM_FOLDER=ubuntu2004
 
 # Install dependencies
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         binutils \
-        clang \
-        libcurl4-openssl-dev \
-        libicu-dev \
-        make \
-        libedit2 \
-        libxml2 \
-        ca-certificates \
         git \
-        gnupg \
-        cmake \
-        rsync \
+        gnupg2 \
+        libc6-dev \
+        libcurl4 \
+        libedit2 \
+        libgcc-9-dev \
+        libpython2.7 \
+        libsqlite3-0 \
+        libstdc++-9-dev \
+        libxml2 \
+        libz3-dev \
+        pkg-config \
+        tzdata \
+        zlib1g-dev \
 # Download GPG keys, signature and Swift package, then unpack and cleanup
     && GNUPGHOME="$(mktemp -d)" \
     && SWIFT_ARCHIVE="${SWIFT_VERSION}-${SWIFT_PLATFORM}.tar.gz" \
