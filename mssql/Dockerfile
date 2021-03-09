@@ -1,4 +1,4 @@
-FROM codesignal/ubuntu-base:v8.0.1
+FROM codesignal/ubuntu-base:new
 
 # Installing Microsoft SQL Server
 RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
